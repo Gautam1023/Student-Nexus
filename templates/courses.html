@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Courses</title>
+    <style>
+        body { background:#0f172a; color:white; font-family:Arial; padding:40px; }
+        .box { background:#1e293b; padding:20px; border-radius:10px; margin-bottom:20px; }
+        select, button { padding:8px; margin-top:10px; }
+        button { background:#38bdf8; border:none; font-weight:bold; }
+    </style>
+</head>
+<body>
+
+<h2>Courses Management</h2>
+
+<div class="box">
+    <h3>Your Enrolled Courses</h3>
+    <ul>
+    {% for c in enrolled %}
+        <li>
+            {{ c[1] }}
+            <a href="/courses/remove/{{ c[0] }}"
+               style="margin-left:10px; color:#f87171; text-decoration:none;">
+               ❌ Remove
+            </a>
+        </li>
+    {% else %}
+        <li>No courses enrolled yet.</li>
+    {% endfor %}
+</ul>
+<p><b>Total Enrolled Credits:</b> {{ total_credits }}</p>
+
+
+
+</div>
+
+<div class="box">
+    <h3>Add Course</h3>
+    <form method="POST">
+        <select name="course_id">
+            {% for c in all_courses %}
+                <option value="{{ c[0] }}">{{ c[1] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Enroll</button>
+    </form>
+</div>
+
+<p><a href="{{ url_for('dashboard') }}" style="color:#38bdf8;">⬅ Back to Dashboard</a></p>
+
+</body>
+</html>

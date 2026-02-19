@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Nexus</title>
+
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <!-- Logo -->
+   <img src="{{ url_for('static', filename='css/images/image.png') }}" class="logo">
+
+
+
+    <!-- Portal Name -->
+    <div class="title">Student Nexus</div>
+
+    <!-- Tagline -->
+    <div class="tagline">Your Academic Guide</div>
+
+    <!-- Action Buttons -->
+    <div class="buttons" id="actionButtons">
+        <a href="/register">Register</a>
+        <a href="/login">Sign In</a>
+    </div>
+</div>
+
+<!-- Link JavaScript -->
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+
+</body>
+</html>

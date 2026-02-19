@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grievance Portal</title>
+    <style>
+        body { background:#0f172a; color:white; font-family:Arial; padding:40px; }
+        .box { background:#1e293b; padding:25px; border-radius:10px; margin-bottom:20px; }
+        input, textarea, button { width:100%; padding:10px; margin-top:10px; }
+        button { background:#38bdf8; border:none; font-weight:bold; cursor:pointer; }
+        .stats { display:flex; gap:20px; }
+        .card { background:#020617; padding:15px; border-radius:8px; flex:1; text-align:center; }
+        .pending { color:#facc15; }
+        .solved { color:#22c55e; }
+    </style>
+</head>
+<body>
+
+<h2>Grievance Dashboard</h2>
+
+<!-- STATS -->
+<div class="stats">
+    <div class="card">
+        <h3>Total</h3>
+        <p>{{ total }}</p>
+    </div>
+    <div class="card">
+        <h3 class="solved">Solved</h3>
+        <p>{{ solved }}</p>
+    </div>
+    <div class="card">
+        <h3 class="pending">Pending</h3>
+        <p>{{ pending }}</p>
+    </div>
+</div>
+
+<!-- LATEST -->
+{% if latest %}
+<div class="box">
+    <h3>Latest Grievance</h3>
+    <p><b>{{ latest[1] }}</b></p>
+    <p>Status: {{ latest[3] }}</p>
+    <p>Date: {{ latest[4] }}</p>
+</div>
+{% endif %}
+
+<!-- ADD NEW -->
+<div class="box">
+    <h3>Raise New Grievance</h3>
+    <form method="POST">
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="description" placeholder="Describe your issue" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<!-- LIST ALL -->
+<div class="box">
+    <h3>Your Grievances</h3>
+
+    {% for g in grievances %}
+        <div style="margin-bottom:15px; padding:10px; background:#020617; border-radius:6px;">
+            <p><b>{{ g[1] }}</b></p>
+            <p>{{ g[2] }}</p>
+            <p>Status: 
+                {% if g[3] == "Solved" %}
+                    <span class="solved">Solved</span>
+                {% else %}
+                    <span class="pending">Pending</span>
+                {% endif %}
+            </p>
+            {% if g[3] == "Pending" %}
+    <a href="/grievance/solve/{{ g[0] }}">
+        <button>Mark as Solved</button>
+    </a>
+{% endif %}
+
+
+            {% if g[3] == "Solved" and not g[5] %}
+                <form method="POST" action="/grievance/feedback/{{ g[0] }}">
+                    <input type="text" name="feedback" placeholder="Give your feedback">
+                    <button>Submit Feedback</button>
+                </form>
+            {% elif g[5] %}
+                <p><b>Your Feedback:</b> {{ g[5] }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</div>
+
+<p><a href="{{ url_for('dashboard') }}" style="color:#38bdf8;">⬅ Back to Dashboard</a></p>
+
+</body>
+</html>
