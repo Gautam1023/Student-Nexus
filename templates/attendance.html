@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attendance | Student Nexus</title>
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: Arial;
+            padding: 40px;
+        }
+
+        .box {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .attendance-row {
+            background: #020617;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .course-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #1e293b;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Topbar -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div style="font-size:28px;">📊</div>
+            <div>
+                <div style="font-weight:bold;">Student Nexus</div>
+                <div style="font-size:12px; opacity:0.7;">Attendance Tracker</div>
+            </div>
+        </div>
+        <div
+            style="width:40px; height:40px; background:#38bdf8; color:#020617; border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold;">
+            {{ name[0] }}
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div style="margin-bottom:40px;">
+        <h1 style="margin-bottom:10px;">
+            Track Your <span style="color:#38bdf8;">Attendance</span>
+        </h1>
+        <p style="opacity:0.8;">
+            Here is your current attendance standing for your enrolled courses. Remember to maintain at least 75%.
+        </p>
+    </div>
+
+
+    <div class="box">
+        <div style="font-weight:bold; font-size:18px; margin-bottom:15px;">Your Attendance</div>
+
+        {% if attendance_data %}
+        {% for a in attendance_data %}
+        <div class="attendance-row">
+            <div class="course-title">
+                <span>{{ a.course_name }}</span>
+                <span class="badge"
+                    style="background:{{ a.color }}33; color:{{ a.color }}; border:1px solid {{ a.color }};">{{ a.status
+                    }}</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" style="width:{{ a.percentage }}%; background:{{ a.color }};"></div>
+            </div>
+
+            <div class="stats">
+                <span>Classes: {{ a.attended }} / {{ a.total }}</span>
+                <span style="color:{{ a.color }}; font-weight:bold; font-size:16px;">{{ a.percentage }}%</span>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No enrolled courses found. Please enroll in subjects to see attendance.</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top:30px; text-align:center;">
+        <a href="{{ url_for('dashboard') }}"
+            style="display:inline-block; padding:12px 25px; background:#38bdf8; color:#020617; font-weight:bold; text-decoration:none; border-radius:8px; transition:0.3s;"
+            onmouseover="this.style.background='#0ea5e9'" onmouseout="this.style.background='#38bdf8'">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
+
+</body>
+
+</html>
